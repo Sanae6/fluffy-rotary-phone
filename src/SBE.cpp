@@ -14,6 +14,10 @@ int main(int argc, char* argv[])
 	while (!game.shouldClose()) {
 		game.update();
 		game.render();
+		if (game.shouldClose()) {
+			lua_getglobal(ls, "closing");
+			lua_call(ls, 0, 0);
+		}
 	}
 }
 

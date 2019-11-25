@@ -11,10 +11,10 @@ int loadTexture(lua_State* l) {//loadTexture(location, name)
 	SDL_Surface* surf = IMG_Load(location);
 	const char* name = lua_tostring(l, -1);
 	SDL_Texture* t = SDL_CreateTextureFromSurface(g->renderer, surf);
-	printf("loaded surf: %s(w=%d,h=%d) ", name,surf->w,surf->h);
+	//printf("loaded surf: %s(w=%d,h=%d) ", name,surf->w,surf->h);
 	int w,h;
 	SDL_QueryTexture(t,NULL,NULL,&w,&h);
-	printf("tex: %s(w=%d,h=%d)\n", name, w, h);
+	//printf("tex: %s(w=%d,h=%d)\n", name, w, h);
 	Texture* tex = new Texture(name, t);
 	g->addTexture(name, tex);
 	Texture* b = g->getTexture(name);
@@ -38,7 +38,7 @@ int textureLocations(lua_State* l) {//texLoc(name,sx,sy,sw,sh,dx,dy,dw,dh) - nam
 		return false;
 	}
 }
-int drawTexture(lua_State* l) {//drawTexture(name)
+bruh drawTexture(lua_State* l) {//drawTexture(name)
 	int top = lua_gettop(l);
 	if (top != 1 || !lua_isstring(l,-1)) {
 		lua_error(l);
@@ -57,7 +57,7 @@ int drawTexture(lua_State* l) {//drawTexture(name)
 }
 Texture::Texture(const char* name, SDL_Texture* tex) {
 	this->name = name;
-	printf(name);
+	//printf(name);
 	texture = tex;
 }
 Texture::~Texture() {

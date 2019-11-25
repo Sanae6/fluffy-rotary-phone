@@ -5,9 +5,9 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "Graphics.hpp"
+#include "Window.hpp"
 struct comp {
 	bool operator () (const char* lhs, const char* rhs) const {
-		//printf(!strcmp(lhs, rhs) ? "true" : "false");
 		return !strcmp(lhs, rhs);
 	};
 };
@@ -16,6 +16,8 @@ struct Game {
 	lua_State* ls;
 	std::unordered_map<const char*, Texture*, std::hash<const char*>, comp> textures = 
 		std::unordered_map<const char*, Texture*, std::hash<const char*>, comp>();
+	std::unordered_map<int, bool> keys = std::unordered_map<int, bool>();
+	
 	SDL_Window* window;
 	SDL_Surface* surf;
 	SDL_Renderer* renderer;
@@ -42,6 +44,14 @@ struct Game {
 		for (auto i : textures) {
 			printf("%s:%s\n", i.first, i.second->name);
 		}
+	}
+	bool isKeyPressed(int key) {
+		if (keys.contains(key)) {
+			auto it = keys.find(key);
+			if (it == keys.end())return NULL;
+			else return it->second;
+		}
+		else return false;
 	}
 	Texture* getTexture(const char* name) {
 		auto it = textures.find(name);

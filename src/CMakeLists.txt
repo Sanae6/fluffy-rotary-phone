@@ -16,13 +16,13 @@ add_custom_command(TARGET SBE POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                        ${CMAKE_SOURCE_DIR}/data/ $<TARGET_FILE_DIR:SBE>/data)
 foreach(fi ${GAME_FOLDER})
-    add_custom_command(TARGET SBE POST_BUILD
+    add_custom_command(TARGET SBE PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
             ${CMAKE_SOURCE_DIR}/game/${f}
             $<TARGET_FILE_DIR:SBE>/game/${f} )
 endforeach()
 foreach(fi ${DATA_FOLDER})
-    add_custom_command(TARGET SBE POST_BUILD
+    add_custom_command(TARGET SBE PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
             ${CMAKE_SOURCE_DIR}/data/${f}
             $<TARGET_FILE_DIR:SBE>/data/${f} )
