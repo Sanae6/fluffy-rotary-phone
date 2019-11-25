@@ -4,12 +4,16 @@ function begin()
 end
 
 function draw()
-	print("Draw");
+	--print("Draw");
 	drawTexture("clown")
 end
 
 function update()
-	print("Update")
+	--print("Update")
+end
+
+function keydown(keycode) --todo later, use numbers as keycodes
+
 end
 
 function stop()

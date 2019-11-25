@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "Game.hpp"
 
 // stolen from http ://www.lua.org/manual/5.2/manual.html#4.8
 static void* l_alloc(void* ud, void* ptr, size_t osize,
@@ -17,8 +17,6 @@ Game::Game(lua_State* state) {
 		exit(1);
 	}
 	SDL_CreateWindowAndRenderer(800, 600, SDL_WINDOW_OPENGL, &window, &renderer);
-	const std::unordered_map<const char*, Texture*, std::hash<const char*>, comp> f = std::unordered_map<const char*, Texture*, std::hash<const char*>, comp>();
-	textures = const_cast<std::unordered_map<const char*, Texture*,std::hash<const char*>,comp>&>(f);
 	ls = state;
 	luaL_openlibs(ls);
 	luaopen_graphics(ls);
@@ -44,7 +42,7 @@ void Game::init() {
 	printAllTexnames();
 }
 void Game::handleEvent() {
-	if (evt.type == SDL_KEYDOWN || evt.type == SDL_QUIT) {
+	if ((evt.type == SDL_KEYDOWN && evt.key.keysym.sym == SDLK_ESCAPE) || evt.type == SDL_QUIT) {
 		setShouldClose(true);//their faces when bruh 
 	}
 }
@@ -54,9 +52,10 @@ void Game::update() {
 	lua_call(ls, 0, 0);
 }
 void Game::render() {
-	SDL_FillRect(surf, 0, SDL_MapRGB(surf->format, 0xFF, 0xFF, 0xFF));
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_RenderFillRect(renderer, 0);
 	lua_getglobal(ls, "draw");
 	lua_call(ls, 0, 0);
-	SDL_UpdateWindowSurface(window);
+	SDL_RenderPresent(renderer);
 }
  

@@ -14,8 +14,8 @@ struct comp {
 struct Game {
 	bool close = false;
 	lua_State* ls;
-	std::unordered_map<const char*, Texture*, std::hash<const char*>, comp> textures;
-	std::vector<Texture*> drawables = std::vector<Texture*>();
+	std::unordered_map<const char*, Texture*, std::hash<const char*>, comp> textures = 
+		std::unordered_map<const char*, Texture*, std::hash<const char*>, comp>();
 	SDL_Window* window;
 	SDL_Surface* surf;
 	SDL_Renderer* renderer;
@@ -50,4 +50,5 @@ struct Game {
 	}
 };
 extern Game* g;
+typedef int bruh; //i'm genuinely tempted to replace all ints in my source with bruh not joking i could do this and nobody could stop me
 #endif 

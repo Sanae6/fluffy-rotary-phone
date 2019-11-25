@@ -11,10 +11,13 @@ public:
 	const char* name;
 	SDL_Rect* source = NULL;
 	SDL_Rect* dest = NULL;
+	double angle = 0;//clockwise
+	SDL_Point* center = NULL;//defaults to center of texture
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
 	Texture(const char*, SDL_Texture*);
 private:
 	~Texture();
 };
 void luaopen_graphics(lua_State*);
-#include "Game.h"
+#include "Game.hpp"
 #endif

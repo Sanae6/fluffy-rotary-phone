@@ -4,7 +4,7 @@ find_package(SDL2 CONFIG REQUIRED)
 find_package(sdl2-image CONFIG REQUIRED)
 find_path(LUA_INCLUDE_DIR lua.h PATH_SUFFIXES lua)
 find_library(LUA_LIBRARY lua)
-file(GLOB_RECURSE SOURCE_CODE *.cpp *.h*)
+file(GLOB_RECURSE SOURCE_CODE *.cpp *.hpp)
 file(GLOB_RECURSE GAME_FOLDER ../game/*.*)
 file(GLOB_RECURSE DATA_FOLDER ../data/*.*)
 # Add source to this project's executable.

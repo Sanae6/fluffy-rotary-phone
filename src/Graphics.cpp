@@ -48,7 +48,7 @@ int drawTexture(lua_State* l) {//drawTexture(name)
 		const char* name = lua_tostring(l,-1);
 		if (g->hasTexture(name)){
 			Texture *t = g->getTexture(name);
-			printf("%s\n", name);
+			SDL_RenderCopy(g->renderer,t->texture,t->source,t->dest);
 			return true;
 		}else {
 			return false;
