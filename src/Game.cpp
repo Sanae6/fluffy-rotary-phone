@@ -32,6 +32,12 @@ Game::Game(lua_State* state) {
 	lua_getfield(ls, lua_gettop(ls), "width");
 	lua_getfield(ls, lua_gettop(ls)-1, "height");
 	lua_getfield(ls, lua_gettop(ls)-2, "title");
+	lua_getfield(ls, lua_gettop(ls)-3, "deltaplier");
+	if (!lua_isnumber(ls, -4)) {
+		fprintf(stderr, "Delta time multiplier is not a number!");
+		lua_close(ls);
+		exit(1);
+	};
 	if (!lua_isnumber(ls, -3)) {
 		fprintf(stderr, "Window width is not a number!");
 		lua_close(ls);
@@ -47,6 +53,7 @@ Game::Game(lua_State* state) {
 		lua_close(ls);
 		exit(1);
 	};
+	deltaplier = lua_tonumbe(ls, -4);
 	int w = lua_tonumber(ls, -3);
 	int h = lua_tonumber(ls, -2);
 	printf("window size: %d,%d\n", w, h);
@@ -77,23 +84,21 @@ void Game::handleEvent() {//temporary escape button
 		setShouldClose(true);//their faces when bruh
 		return;
 	}
-	if (evt.type == SDL_KEYDOWN) {
-		keys[evt.key.keysym.sym] = true;
-		lua_getglobal(ls, "keydown");
-		lua_pushinteger(ls, evt.key.keysym.sym);
+	if (evt.type == SDL_KEYDOWN||evt.type == SDL_KEYUP) {
+		int k = evt.key.keysym.sym;
+		keys[k] = evt.type == SDL_KEYDOWN;
+		lua_getglobal(ls, keys[k]?"keydown":"keyup");
+		lua_pushinteger(ls, k);
 		lua_call(ls, 1, 0);
 	}
-
-	if (evt.type == SDL_KEYUP) {
-		int k = evt.key.keysym.sym;
-		keys[k] = false;
-	}
 }
-void Game::update() {
+void Game::update(double t, double dt) {
 	while (SDL_PollEvent(&evt)&&(!shouldClose())) handleEvent();
 	if (shouldClose())return;
 	lua_getglobal(ls, "update");
-	lua_call(ls, 0, 0);
+	lua_pushnumber(ls, t);
+	lua_pushnumber(ls, dt*deltaplier);
+	lua_call(ls, 2, 0);
 }
 void Game::render() {
 	if (shouldClose())return;

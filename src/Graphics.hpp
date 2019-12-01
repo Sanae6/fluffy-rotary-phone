@@ -10,7 +10,7 @@ public:
 	SDL_Texture* texture;
 	const char* name;
 	SDL_Rect* source = NULL;
-	SDL_Rect* dest = NULL;
+	int width,height;
 	double angle = 0;//clockwise
 	SDL_Point* center = NULL;//defaults to center of texture
 	SDL_RendererFlip flip = SDL_FLIP_NONE;

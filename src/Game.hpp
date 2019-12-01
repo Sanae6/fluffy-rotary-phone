@@ -17,7 +17,7 @@ struct Game {
 	std::unordered_map<const char*, Texture*, std::hash<const char*>, comp> textures = 
 		std::unordered_map<const char*, Texture*, std::hash<const char*>, comp>();
 	std::unordered_map<int, bool> keys = std::unordered_map<int, bool>();
-	
+	int deltaplier;
 	SDL_Window* window;
 	SDL_Surface* surf;
 	SDL_Renderer* renderer;
@@ -25,7 +25,7 @@ struct Game {
 	Game(lua_State*);
 	void init();
 	~Game();
-	void update();
+	void update(double, double);
 	bool shouldClose() {
 		return close;
 	}
