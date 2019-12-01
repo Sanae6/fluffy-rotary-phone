@@ -19,6 +19,7 @@ Game::Game(lua_State* state) {
 	ls = state;
 	luaL_openlibs(ls);
 	luaopen_graphics(ls);
+	luaopen_window(ls);
 	close = false;
 	int i = luaL_loadfile(ls, "game/define.lua");
 	if (i != LUA_OK) {
@@ -32,19 +33,13 @@ Game::Game(lua_State* state) {
 	lua_getfield(ls, lua_gettop(ls), "width");
 	lua_getfield(ls, lua_gettop(ls)-1, "height");
 	lua_getfield(ls, lua_gettop(ls)-2, "title");
-	lua_getfield(ls, lua_gettop(ls)-3, "deltaplier");
-	if (!lua_isnumber(ls, -4)) {
-		fprintf(stderr, "Delta time multiplier is not a number!");
+	if (!lua_isinteger(ls, -3)) {
+		fprintf(stderr, "Window width is not an integer!");
 		lua_close(ls);
 		exit(1);
 	};
-	if (!lua_isnumber(ls, -3)) {
-		fprintf(stderr, "Window width is not a number!");
-		lua_close(ls);
-		exit(1);
-	};
-	if (!lua_isnumber(ls, -2)) {
-		fprintf(stderr, "Window height is not a number!");
+	if (!lua_isinteger(ls, -2)) {
+		fprintf(stderr, "Window height is not an integer!");
 		lua_close(ls);
 		exit(1);
 	};
@@ -53,9 +48,8 @@ Game::Game(lua_State* state) {
 		lua_close(ls);
 		exit(1);
 	};
-	deltaplier = lua_tonumbe(ls, -4);
-	int w = lua_tonumber(ls, -3);
-	int h = lua_tonumber(ls, -2);
+	long w = lua_tointeger(ls, -3);
+	long h = lua_tointeger(ls, -2);
 	printf("window size: %d,%d\n", w, h);
 	SDL_CreateWindowAndRenderer(w,h, SDL_WINDOW_OPENGL, &window, &renderer);
 	SDL_SetWindowTitle(window, lua_tostring(ls,-1));
@@ -97,7 +91,7 @@ void Game::update(double t, double dt) {
 	if (shouldClose())return;
 	lua_getglobal(ls, "update");
 	lua_pushnumber(ls, t);
-	lua_pushnumber(ls, dt*deltaplier);
+	lua_pushnumber(ls, dt);
 	lua_call(ls, 2, 0);
 }
 void Game::render() {

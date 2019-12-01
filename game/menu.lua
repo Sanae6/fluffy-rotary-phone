@@ -15,8 +15,6 @@ function draw()
 end
 
 function update(time,delta)
-	print(delta)
-	print(time)
 	if keys.W then player.y = player.y - delta end
 	if keys.S then player.y = player.y + delta end
 	if keys.A then player.x = player.x - delta end
