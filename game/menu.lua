@@ -5,8 +5,8 @@ S = 115
 D = 100
 keys = {W=false,A=false,S=false,D=false}
 function begin()
-	loadTexture("data/clownpiece.png","clown");
-	print("Start");
+	loadTexture("data/clownpiece.png","clown")
+	print("Start")
 end
 
 function draw()
